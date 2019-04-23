@@ -30,6 +30,8 @@ public class OssTest {
     /**
      * 生产V2
      */
+
+    //
     private static String endpoint = "http://oss-cn-langfang-lthk-d01-a.super.unicom.local";
     private static String accessKeyId = "FqZxNl1Ub5ZkFq7v";
     private static String accessKeySecret = "fTqQLZV2ZbHDFu3RUmw8lzO878JLRs";
