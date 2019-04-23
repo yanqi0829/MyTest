@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/javabasis/javabasis.iml" filepath="$PROJECT_DIR$/javabasis/javabasis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/multithread/multithread.iml" filepath="$PROJECT_DIR$/multithread/multithread.iml" />
+      <module fileurl="file://$PROJECT_DIR$/natest.iml" filepath="$PROJECT_DIR$/natest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springboot/springboot.iml" filepath="$PROJECT_DIR$/springboot/springboot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/workcontext/workcontext.iml" filepath="$PROJECT_DIR$/workcontext/workcontext.iml" />
+    </modules>
+  </component>
+</project>

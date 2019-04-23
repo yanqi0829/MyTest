@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation=" http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/jdbc
+    http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--配置aop前置通知-->
+    <bean id="iTeacherService" class="com.yanqi.service.impl.ITeacherServiceImpl">
+        <property name="teacherDao" ref="teacherDao"></property>
+    </bean>
+    <!--前置通知类-->
+     <bean id="logBefore" class="com.yanqi.aop.LogBefore">
+    </bean>
+    <!--后置通知类-->
+    <bean id="logAfter" class="com.yanqi.aop.LogAfter">
+    </bean>
+    <!--异常通知类-->
+    <bean id="logException" class="com.yanqi.aop.LogException">
+    </bean>
+    <!--将add方法和通知进行关联-->
+    <aop:config>
+        <!--配置切入点-->
+        <aop:pointcut id="pointcut" expression="execution(public  void com.yanqi.dao.TeacherDaoImpl.addTeacher(com.yanqi.entity.Teacher))"></aop:pointcut>
+       <!--配置连接线-->
+        <aop:advisor advice-ref="logBefore" pointcut-ref="pointcut"></aop:advisor>
+        <aop:advisor advice-ref="logAfter" pointcut-ref="pointcut"></aop:advisor>
+        <aop:advisor advice-ref="logException" pointcut-ref="pointcut"></aop:advisor>
+
+    </aop:config>
+    <!--配置扫面器, spring扫描包下是否有注解@Component，如果有，将该类加入ioc容器中-->
+    <context:component-scan base-package="com.yanqi.dao,com.yanqi.entity"></context:component-scan>
+      <!--配置数据库相关  事务-->
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+            <property name="driverClassName"  value="com.mysql.jdbc.Driver"></property>  <!--驱动类名-->
+            <!-- 基本属性 url、user、password -->
+            <property name="url" value="jdbc:mysql://10.124.146.115:3306/test_cust_dbusi?autoReconnect=true" />
+            <property name="username" value="test_cust_dbusi" />
+            <property name="password" value="TEST_dbusi_387" />
+            <!-- 配置初始化大小、最小、最大 -->
+            <property name="maxActive" value="10" /> <!--链接池最大活动时间-->
+            <property name="initialSize" value="2" />
+            <property name="minIdle" value="8" />   <!-- 最小空闲时间-->
+        </bean>
+    <!--配置事务管理器myTransactionManager-->
+        <bean id="myTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+            <property name="dataSource" ref="dataSource"></property>
+        </bean>
+            
+        <!--增加对事务的支持-->
+    <tx:annotation-driven transaction-manager="myTransactionManager"/>
+
+        <!--p命名空间赋值-->
+    <bean  id="stu" class="com.yanqi.entity.Student" p:stAge="12" p:stName="yanqi">
+        <!--<property name="stAge" value="12"></property>-->
+        <!--<property name="stName" value="yanqi"></property>-->
+
+    </bean>
+
+        <!--验证构造方法赋值-->
+    <bean  id="teacher" class="com.yanqi.entity.Teacher" >
+        <!--按序号指定参数-->
+        <constructor-arg value="15" index="1"></constructor-arg>
+        <constructor-arg value="Lucky" index="0"></constructor-arg>
+
+        <!--按实例变量名称区分参数-->
+        <!--<constructor-arg value="15" name="age"></constructor-arg>-->
+        <!--<constructor-arg value="Lucky" name="name"></constructor-arg>-->
+
+        <!--按参数类型区分参数-->
+        <!--<constructor-arg value="Lucky" type="java.lang.String"></constructor-arg>-->
+        <!--<constructor-arg value="15" type="int"></constructor-arg>-->
+
+        <!--<property name="age" value="15"></property>-->
+        <!--<property name="name" value="Lucky"></property>-->
+    </bean>
+    <!--实际上调用了setXXX方法，进行了注入-->
+    <bean  id="course" class="com.yanqi.entity.Course">
+        <property name="courseName" value="java"></property>
+        <property name="cTime" value="123"></property>
+        <!--将teacher对象注入到course对象中-->
+        <property name="teacher" ref="teacher"></property>
+    </bean>
+
+    <bean id="collectionType" class="com.yanqi.entity.AllCollectionType">
+        <property name="list">
+            <list>
+                <value>"12&gt;3"</value>
+                <value>"45<![CDATA[&]]>6"</value>
+            </list>
+        </property>
+
+        <property name="array">
+            <array>
+                <value>"12"</value>
+                <value>"12"</value>
+            </array>
+        </property>
+    <property name="set"
+>
+        <set>
+            <value>足球</value>
+
+        </set>
+    </property>
+    <property name="map">
+        <map>
+            <entry>
+                <key>
+                    <value>asd</value>
+                </key>
+                <value>qwe</value>
+            </entry>
+
+            <entry>
+                <key>
+                    <value>ad</value>
+                </key>
+                <value>qe</value>
+            </entry>
+        </map>
+    </property>
+        <property name="props">
+            <props>
+                <prop key="123">123</prop>
+                <prop key="233">456</prop>
+            </props>
+
+        </property>
+
+    </bean>
+    <!--自动装配-->
+           <!--bean的id值=类的成员变量名-->
+    <bean  id="course1" class="com.yanqi.entity.Course" autowire="byName">  </bean>
+    <bean  id="course2" class="com.yanqi.entity.Course" autowire="byType" ></bean>
+    <bean  id="course3" class="com.yanqi.entity.Course" autowire="constructor" ></bean>
+
+
+
+
+
+</beans>
