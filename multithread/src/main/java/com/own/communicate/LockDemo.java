@@ -3,7 +3,7 @@ package com.own.communicate;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
+//Lock锁
 class LoackDemo {
     public static void main(String[] args) {
         //共享的资源对象
